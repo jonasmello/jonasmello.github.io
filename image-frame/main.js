@@ -1,50 +1,63 @@
+const createElements = (src) => {
+  const $bg = document.createElement("img");
+  $bg.setAttribute("style", "display: none");
+  const $imgFromInput = document.createElement("img");
+  $imgFromInput.setAttribute("style", "display: none");
+  const $canvas = document.createElement("canvas");
+  $canvas.setAttribute("style", "display: none");
+  $imgFromInput.src = src;
+
+  return [$bg, $imgFromInput, $canvas];
+};
+
+const makeImage = (src) => {
+  [$bg, $imgFromInput, $canvas] = createElements(src);
+
+  $imgFromInput.onload = () => {
+    const ratio = $imgFromInput.width / $imgFromInput.height;
+
+    const isLandscape = $imgFromInput.width > $imgFromInput.height;
+    $bg.src = `./img/fundo-${isLandscape ? "paisagem" : "retrato"}.png`;
+
+    $bg.onload = () => {
+      const context = $canvas.getContext("2d");
+      $canvas.width = $bg.width;
+      $canvas.height = $bg.height;
+
+      const landscapeHeight = 425;
+
+      const dimensions = isLandscape
+        ? [
+            115 + (515 - landscapeHeight * ratio) / 2,
+            390,
+            landscapeHeight * ratio,
+            landscapeHeight,
+          ]
+        : [115, 390, 515, 515 / ratio];
+
+      context.globalAlpha = 0.8;
+      context.drawImage($imgFromInput, ...dimensions);
+      context.globalAlpha = 1;
+      context.drawImage($bg, 0, 0);
+
+      const b64Img = $canvas.toDataURL("image/png");
+      const $result = document.createElement("img");
+      $result.src = b64Img;
+      $result.setAttribute("max-width", "100vw");
+
+      $result.setAttribute("max-height", "100vh");
+      document.body.appendChild($result);
+    };
+  };
+};
+
 function changeEvent(e) {
-  if (this.files && this.files[0]) {
+  if (e.target.files && e.target.files[0]) {
     const reader = new FileReader();
     reader.onload = function (e) {
-      let $bg = document.createElement("img");
-      $bg.setAttribute("style", "display: none");
-      let $img = document.createElement("img");
-      $img.setAttribute("style", "display: none");
-      let $canvas = document.createElement("canvas");
-      $canvas.setAttribute("style", "display: none");
-
-      // $img.src = "./img/paisagem.jpg";
-      // $img.src = "./img/retrato.jpg";
-      $img.src = e.target.result;
-
-      $img.onload = () => {
-        const isLandscape = $img.width > $img.height;
-        $bg.src = `./img/fundo-${isLandscape ? "paisagem" : "retrato"}.png`;
-
-        document.body.appendChild($bg);
-        document.body.appendChild($img);
-        document.body.appendChild($canvas);
-
-        $bg.onload = () => {
-          console.log(`🚀 : $bg:`, $bg);
-          const context = $canvas.getContext("2d");
-          $canvas.width = $bg.width;
-
-          $canvas.height = $bg.height;
-
-          context.globalAlpha = 1.0;
-          context.drawImage($bg, 0, 0);
-          context.globalAlpha = 0.5;
-          if (isLandscape) {
-            context.drawImage($img, 188, 159, 302, 200);
-          } else {
-            context.drawImage($img, 155, 175, 205, 305);
-          }
-
-          const b64Img = $canvas.toDataURL("image/png");
-          const $result = document.createElement("img");
-          $result.src = b64Img;
-          document.body.appendChild($result);
-        };
-      };
+      makeImage(e.target.result);
     };
-    reader.readAsDataURL(this.files[0]);
+    reader.readAsDataURL(e.target.files[0]);
   }
 }
 
@@ -52,4 +65,9 @@ function changeEvent(e) {
   const $input = document.querySelector("input");
 
   $input.addEventListener("change", changeEvent);
+
+  // const paisagem = "./tmp/paisagem.jpg";
+  // const retrato = "./tmp/retrato.jpg";
+
+  // makeImage(retrato);
 })();
