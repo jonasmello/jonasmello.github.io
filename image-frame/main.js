@@ -17,7 +17,7 @@ const makeImage = (src) => {
     const ratio = $imgFromInput.width / $imgFromInput.height;
 
     const isLandscape = $imgFromInput.width > $imgFromInput.height;
-    $bg.src = `./img/fundo-${isLandscape ? "paisagem" : "retrato"}.png`;
+    $bg.src = `./img/fundo-${isLandscape ? "paisagem" : "retrato"}.png?1`;
 
     $bg.onload = () => {
       const context = $canvas.getContext("2d");
