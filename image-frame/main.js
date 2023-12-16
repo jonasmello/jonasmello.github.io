@@ -17,7 +17,7 @@ const makeImage = (src) => {
     const ratio = $imgFromInput.width / $imgFromInput.height;
 
     const isLandscape = $imgFromInput.width > $imgFromInput.height;
-    $bg.src = `./img/novo-bg.png?2`;
+    $bg.src = `./img/novo-bg-com-logo?3`;
 
     $bg.onload = () => {
       const context = $canvas.getContext("2d");
