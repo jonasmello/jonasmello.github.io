@@ -17,7 +17,7 @@ const makeImage = (src) => {
     const ratio = $imgFromInput.width / $imgFromInput.height;
 
     const isLandscape = $imgFromInput.width > $imgFromInput.height;
-    $bg.src = `./img/fundo-${isLandscape ? "paisagem" : "retrato"}.png?2`;
+    $bg.src = `./img/novo-bg.png?2`;
 
     $bg.onload = () => {
       const context = $canvas.getContext("2d");
@@ -28,24 +28,28 @@ const makeImage = (src) => {
 
       const dimensions = isLandscape
         ? [
-            115 + (515 - landscapeHeight * ratio) / 2,
-            390,
+            280 + (550 - landscapeHeight * ratio) / 2,
+            250,
             landscapeHeight * ratio,
             landscapeHeight,
           ]
-        : [115, 390, 515, 515 / ratio];
+        : [280, 150, 550, 550 / ratio];
 
       context.globalAlpha = 0.8;
       context.drawImage($imgFromInput, ...dimensions);
       context.globalAlpha = 1;
       context.drawImage($bg, 0, 0);
 
+      // context.globalAlpha = 1;
+      // context.drawImage($bg, 0, 0);
+      // context.globalAlpha = 0.5;
+      // context.drawImage($imgFromInput, ...dimensions);
+
       const b64Img = $canvas.toDataURL("image/png");
       const $result = document.createElement("img");
       $result.src = b64Img;
-      $result.setAttribute("max-width", "100vw");
+      $result.setAttribute("style", "max-width: 80vw; max-height: 80vh");
 
-      $result.setAttribute("max-height", "100vh");
       document.body.appendChild($result);
     };
   };
@@ -69,5 +73,5 @@ function changeEvent(e) {
   // const paisagem = "./tmp/paisagem.jpg";
   // const retrato = "./tmp/retrato.jpg";
 
-  // makeImage(retrato);
+  // makeImage(paisagem);
 })();
