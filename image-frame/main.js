@@ -35,9 +35,9 @@ const makeImage = (src) => {
           ]
         : [280, 150, 550, 550 / ratio];
 
-      context.globalAlpha = 0.8;
-      context.drawImage($imgFromInput, ...dimensions);
+      // context.globalAlpha = 0.8;
       context.globalAlpha = 1;
+      context.drawImage($imgFromInput, ...dimensions);
       context.drawImage($bg, 0, 0);
 
       // context.globalAlpha = 1;
