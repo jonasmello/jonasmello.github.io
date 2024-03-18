@@ -37,7 +37,7 @@ const makeImage = (src) => {
 
       context.globalAlpha = 1;
       context.drawImage($imgFromInput, ...dimensions);
-      context.globalAlpha = 0.6;
+      // context.globalAlpha = 0.6;
       context.drawImage($bg, 0, 0);
 
       // context.globalAlpha = 1;
