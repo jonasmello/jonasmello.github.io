@@ -50,7 +50,20 @@ const makeImage = (src) => {
       $result.src = b64Img;
       $result.setAttribute("style", "max-width: 80vw; max-height: 80vh");
 
-      document.body.appendChild($result);
+      const $div = document.createElement("div");
+      $div.className = "image-ct";
+
+      const $close = document.createElement("div");
+      $close.className = "close";
+      $close.innerText = "x";
+      $close.onclick = (e) => {
+        e.target.parentNode.remove();
+      };
+
+      $div.appendChild($close);
+      $div.appendChild($result);
+
+      document.body.appendChild($div);
     };
   };
 };
