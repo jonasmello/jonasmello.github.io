@@ -79,6 +79,11 @@ function changeEvent(e) {
 }
 
 (function () {
+  window.onbeforeunload = function (event) {
+    event.preventDefault();
+    return;
+  };
+
   const $input = document.querySelector("input");
 
   $input.addEventListener("change", changeEvent);
